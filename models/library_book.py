@@ -17,7 +17,7 @@ class LibraryBook(models.Model):
          ('borrowed', 'Borrowed'),
          ('lost', 'Lost')],
          'State', default="draft")
-         
+
     @api.model
     def is_allowed_transition(self, old_state, new_state):
         allowed = [('draft', 'available'),
@@ -27,7 +27,7 @@ class LibraryBook(models.Model):
          ('borrowed', 'lost'),
          ('lost', 'available')]
         return (old_state, new_state) in allowed
-        
+
     @api.multi
     def change_state(self, new_state):
         for book in self:
@@ -35,7 +35,7 @@ class LibraryBook(models.Model):
                 book.state = new_state
             else:
                 continue
-        
+
     @api.model
     def make_available(self):
         self.change_state('available')
@@ -47,4 +47,4 @@ class LibraryBook(models.Model):
     @api.model
     def make_lost(self):
         self.change_state('lost')
-        
+
